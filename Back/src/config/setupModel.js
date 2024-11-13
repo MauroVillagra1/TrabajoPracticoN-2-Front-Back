@@ -4,7 +4,7 @@ const Students = require('../models/Student.js');
 const setupModels = async () => {
     const sequelize = await getSeqInstance();
     Students.init(sequelize);
-    await sequelize.sync(); // Sincroniza el modelo con la base de datos
+    await sequelize.sync(); 
 };
 
 module.exports = setupModels;

@@ -8,7 +8,7 @@ const createInstance = async () => {
         process.env.DB_PASSWORD, // contraseña
         {
             host: process.env.DB_HOST,
-            port: process.env.DB_PORT, // Agrega el puerto aquí
+            port: process.env.DB_PORT, // Puerto 
             dialect: 'mysql',
             pool: {
                 max: 3

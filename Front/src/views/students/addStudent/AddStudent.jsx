@@ -38,11 +38,13 @@ const AddStudent = () => {
           timer: 1500
         });
         reset(); 
+        navigate('/students');
       } else {
+        const result = await response.json();
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "El alumno no se pudo crear!",
+          text: result.message || "El alumno no se pudo crear!",
         });
       }
     } catch (error) {
@@ -67,18 +69,23 @@ const AddStudent = () => {
       <div className="formContainer my-5 mx-3">
         <Form onSubmit={handleSubmit(onSubmit)} className="mx-5">
 
-          <div className="mb-3 ">
+          <div className="mb-3">
             <Form.Group className="d-flex justify-content-between">
               <label className="form-label me-3">Nombre:</label>
               <input
                 type="text"
                 className="inputForm"
                 placeholder="Ingrese nombre..."
-                {...register("firstname", { required: "El nombre es obligatorio" ,
+                {...register("firstname", { 
+                  required: "El nombre es obligatorio", 
                   maxLength: {
                     value: 100,
                     message: "La longitud máxima es de 100 caracteres"
                   },
+                  pattern: {
+                    value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/,
+                    message: "El nombre solo puede contener letras y espacios"
+                  }
                 })}
               />
             </Form.Group>
@@ -96,12 +103,17 @@ const AddStudent = () => {
                 type="text"
                 className="inputForm"
                 placeholder="Ingrese apellido..."
-                {...register("lastname", { required: "El apellido es obligatorio",
+                {...register("lastname", { 
+                  required: "El apellido es obligatorio",
                   maxLength: {
                     value: 100,
                     message: "La longitud máxima es de 100 caracteres"
                   },
-                 })}
+                  pattern: {
+                    value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/,
+                    message: "El apellido solo puede contener letras y espacios"
+                  }
+                })}
               />
             </Form.Group>
             <div className="d-flex justify-content-end">
@@ -118,15 +130,21 @@ const AddStudent = () => {
                 type="number"
                 className="inputForm"
                 placeholder="Ingrese DNI..."
-                {...register("dni", { required: "El DNI es obligatorio",
-                  maxLength: {
-                    value: 10,
-                    message: "La longitud máxima es de 10 numeros"
+                {...register("dni", { 
+                  required: "El DNI es obligatorio",
+                  minLength: {
+                    value: 7,
+                    message: "El DNI debe tener al menos 7 dígitos"
                   },
-                  pattern:{
-                    value: /^[0-9]{1,10}$/,
+                  maxLength: {
+                    value: 9,
+                    message: "El DNI no puede tener más de 9 dígitos"
+                  },
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: "El DNI debe contener solo números"
                   }
-                 })}
+                })}
               />
             </Form.Group>
             <div className="d-flex justify-content-end">
@@ -143,7 +161,8 @@ const AddStudent = () => {
                 type="text"
                 className="inputForm"
                 placeholder="Ingrese Email..."
-                {...register("email", { required: "El Email es obligatorio",
+                {...register("email", { 
+                  required: "El Email es obligatorio",
                   maxLength: {
                     value: 100,
                     message: "La longitud máxima es de 100 caracteres"
@@ -152,7 +171,7 @@ const AddStudent = () => {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                     message: 'Ingrese un formato de Email que sea correcto'
                   }
-                 })}
+                })}
               />
             </Form.Group>
             <div className="d-flex justify-content-end">

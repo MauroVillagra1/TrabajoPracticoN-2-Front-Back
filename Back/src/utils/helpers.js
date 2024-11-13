@@ -1,19 +1,20 @@
-//Para no tener que escribir 80 lineas de lo mismo 
-
-const generateResponse = (status, message, data = null) => {
-    return {
-        status,
-        message,
-        data,
-    };
-};
-// Aqui compruebo si es valido el mail xd
 const isValidEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
 };
 
+const isValidName = (name) => {
+    const re = /^[A-Za-z]+$/; // Solo letras
+    return re.test(name) && name.length <= 100;
+};
+
+const isValidDni = (dni) => {
+    const re = /^\d{6,9}$/; // Solo números y entre 7-8 dígitos
+    return re.test(String(dni));
+};
+
 module.exports = {
-    generateResponse,
     isValidEmail,
+    isValidName,
+    isValidDni,
 };

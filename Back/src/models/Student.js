@@ -1,8 +1,8 @@
 const { Model, DataTypes } = require('sequelize');
-const { Op } = require('sequelize');  // Importa Op desde Sequelize
+const { Op } = require('sequelize');
 
 class Students extends Model {
-    static init = (sequelize) => {
+    static init(sequelize) {
         super.init(
             {
                 id: {
@@ -17,28 +17,47 @@ class Students extends Model {
                 firstname: {
                     type: DataTypes.STRING(100),
                     allowNull: false,
+                    validate: {
+                        len: [1, 100], 
+                        isAlpha: true, 
+                    },
                 },
                 lastname: {
                     type: DataTypes.STRING(100),
                     allowNull: false,
+                    validate: {
+                        len: [1, 100], 
+                        isAlpha: true, 
+                    },
                 },
                 dni: {
                     type: DataTypes.BIGINT,
                     allowNull: false,
+                    validate: {
+                        isNumeric: true, 
+                        len: [6, 9], 
+                    },
                 },
                 email: {
                     type: DataTypes.STRING(100),
                     allowNull: false,
+                    validate: {
+                        len: [1, 100], 
+                        isEmail: true, 
+                    },
                 },
                 deleted: {
                     type: DataTypes.TINYINT,
                     defaultValue: 0,
+                    validate: {
+                        isIn: [[0, 1]], 
+                    },
                 },
             },
             {
                 sequelize,
                 modelName: 'students',
-                timestamps: true, // Activar automáticamente createdAt y updatedAt
+                timestamps: true, 
             }
         );
 
@@ -50,7 +69,7 @@ class Students extends Model {
             order: [['sid', 'DESC']],
             where: { deleted: 0 },
         });
-        return lastStudent ? lastStudent.sid + 1 : 1; // Iniciar en 1 si no hay estudiantes
+        return lastStudent ? lastStudent.sid + 1 : 1;
     }
 
     static async getAll(search, currentPage, pageSize) {

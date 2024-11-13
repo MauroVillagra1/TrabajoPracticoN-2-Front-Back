@@ -1,5 +1,8 @@
 const Students = require('../models/Student.js');
-const { Op } = require('sequelize');  // Agregar esta línea
+const { Op } = require('sequelize');
+const {isValidEmail, isValidName, isValidDni } = require('../utils/helpers.js');
+
+
 
 const findAll = async (search, currentPage = 1, pageSize = 5) => {
     try {
@@ -13,20 +16,46 @@ const findAll = async (search, currentPage = 1, pageSize = 5) => {
 
 const create = async (student) => {
     try {
-        // Verificar que no existe un estudiante con el mismo dni o email
-        const existingStudent = await Students.findOne({
+        // Validaciones de firstname y lastname
+        if (!isValidName(student.firstname) || !isValidName(student.lastname)) {
+            throw new Error('El nombre y apellido deben contener solo letras y tener máximo 100 caracteres.');
+        }
+
+        // Validaciones de DNI
+        if (!isValidDni(student.dni)) {
+            throw new Error('El DNI debe ser un número de 7 u 8 dígitos.');
+        }
+
+        // Validaciones de email
+        if (!isValidEmail(student.email)) {
+            throw new Error('Formato de correo electrónico no válido.');
+        }
+
+        // Verificar si ya existe un estudiante con el mismo DNI
+        const existingDni = await Students.findOne({
             where: {
-                [Op.or]: [
-                    { dni: student.dni, deleted: 0 },
-                    { email: student.email, deleted: 0 },
-                ],
+                dni: student.dni,
+                deleted: 0,
             },
         });
 
-        if (existingStudent) {
-            throw new Error('Student with the same DNI or email already exists.');
+        if (existingDni) {
+            throw new Error('Ya existe un estudiante con el mismo DNI.');
         }
 
+        // Verificar si ya existe un estudiante con el mismo email
+        const existingEmail = await Students.findOne({
+            where: {
+                email: student.email,
+                deleted: 0,
+            },
+        });
+
+        if (existingEmail) {
+            throw new Error('Ya existe un estudiante con el mismo correo electrónico.');
+        }
+
+        // Obtener el siguiente SID y crear el estudiante
         const newSid = await Students.getNextSid();
         const newStudent = await Students.create({
             ...student,
@@ -39,6 +68,7 @@ const create = async (student) => {
         throw error;
     }
 };
+
 
 module.exports = {
     findAll,

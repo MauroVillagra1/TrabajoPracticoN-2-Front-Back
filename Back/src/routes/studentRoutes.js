@@ -1,7 +1,7 @@
 const express = require('express');
 const { findAll, create } = require('../services/studentService.js');
-const { Op } = require('sequelize');  // Importa Op desde Sequelize
-const Students = require('../models/Student'); // No uses llaves ({}) en la importación
+const { Op } = require('sequelize');  
+const Students = require('../models/Student'); 
 
 const router = express.Router();
 
@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/delete/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
