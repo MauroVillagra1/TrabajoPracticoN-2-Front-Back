@@ -19,7 +19,6 @@ class Students extends Model {
                     allowNull: false,
                     validate: {
                         len: [1, 100], 
-                        isAlpha: true, 
                     },
                 },
                 lastname: {
@@ -27,7 +26,6 @@ class Students extends Model {
                     allowNull: false,
                     validate: {
                         len: [1, 100], 
-                        isAlpha: true, 
                     },
                 },
                 dni: {

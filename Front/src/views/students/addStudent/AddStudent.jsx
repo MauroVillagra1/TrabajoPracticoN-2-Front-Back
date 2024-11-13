@@ -83,7 +83,7 @@ const AddStudent = () => {
                     message: "La longitud máxima es de 100 caracteres"
                   },
                   pattern: {
-                    value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/,
+                    value: /^(?!\s)([A-Za-zÁÉÍÓÚáéíóúñÑ]+(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*)(?=\s*$)/,
                     message: "El nombre solo puede contener letras y espacios"
                   }
                 })}
@@ -110,7 +110,7 @@ const AddStudent = () => {
                     message: "La longitud máxima es de 100 caracteres"
                   },
                   pattern: {
-                    value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/,
+                    value: /^(?!\s)([A-Za-zÁÉÍÓÚáéíóúñÑ]+(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*)(?=\s*$)/,
                     message: "El apellido solo puede contener letras y espacios"
                   }
                 })}

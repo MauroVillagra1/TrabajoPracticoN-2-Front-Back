@@ -4,7 +4,7 @@ const isValidEmail = (email) => {
 };
 
 const isValidName = (name) => {
-    const re = /^[A-Za-z]+$/; // Solo letras
+const re = /^(?!\s)([A-Za-z]+(\s[A-Za-z]+)*)(?=\s*$)/;
     return re.test(name) && name.length <= 100;
 };
 
